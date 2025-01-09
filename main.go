@@ -293,6 +293,7 @@ func Note(title *C.char, desc *C.char, label *C.char, next C.int) *C.char {
 	if label != nil && C.GoString(label) != "" {
 		s := C.GoString(label)
 		nt.label = &s
+		nt.next = (next != 0)
 
 	}
 
