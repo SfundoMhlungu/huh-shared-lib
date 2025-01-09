@@ -220,3 +220,41 @@ func (s *NewMultiSelect) ForGroup() huh.Field {
 
 	return sel
 }
+
+type NewNote struct {
+	title string
+	desc  string
+	label *string
+	next  bool
+}
+
+func (n *NewNote) GetValue() string {
+	return ""
+}
+
+func (nt *NewNote) Run() string {
+	n := huh.NewNote()
+	n.Title(nt.title)
+	n.Description(nt.desc)
+
+	if nt.label != nil {
+		n.NextLabel("\n" + *nt.label)
+		n.Next(nt.next)
+	}
+	n.Run()
+
+	return ""
+}
+
+func (nt *NewNote) ForGroup() huh.Field {
+	n := huh.NewNote()
+	n.Title(nt.title)
+	n.Description(nt.desc)
+
+	if nt.label != nil {
+		n.NextLabel("\n" + *nt.label)
+		n.Next(nt.next)
+	}
+
+	return n
+}

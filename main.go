@@ -5,10 +5,6 @@ package main
 */
 import "C"
 import (
-	"errors"
-	"fmt"
-	"os"
-	"strconv"
 	"strings"
 	"time"
 
@@ -283,135 +279,29 @@ func Spinner(seconds C.int, title *C.char) {
 }
 
 //export Note
-func Note(title *C.char, desc *C.char, label *C.char, next C.int) {
+func Note(title *C.char, desc *C.char, label *C.char, next C.int) *C.char {
 	if f.Elems == nil {
 		createMaps()
 	}
-	n := huh.NewNote()
-	n.Title(C.GoString(title))
-	n.Description(C.GoString(desc))
+	nt := &NewNote{}
+	nt.desc = C.GoString(desc)
+	nt.title = C.GoString(title)
+	// n := huh.NewNote()
+	// n.Title(C.GoString(title))
+	// n.Description(C.GoString(desc))
 
 	if label != nil && C.GoString(label) != "" {
-		n.NextLabel("\n" + C.GoString(label))
-		n.Next(next != 0)
-	}
-	n.Run()
-}
+		s := C.GoString(label)
+		nt.label = &s
 
-//export Test
-func Test() {
-	var burger Burger
-	var order = Order{Burger: burger}
-	// Should we run in accessible mode?
-	accessible, _ := strconv.ParseBool(os.Getenv("ACCESSIBLE"))
-
-	form := huh.NewForm(
-		huh.NewGroup(huh.NewNote().
-			Title("Charmburger").
-			Description("Welcome to _Charmburger™_.\n\nHow may we take your order?\n\n").
-			Next(true).
-			NextLabel("Next"),
-		),
-
-		// Choose a burger.
-		// We'll need to know what topping to add too.
-		huh.NewGroup(
-			huh.NewSelect[string]().
-				Options(huh.NewOptions("Charmburger Classic", "Chickwich", "Fishburger", "Charmpossible™ Burger")...).
-				Title("Choose your burger").
-				Description("At Charm we truly have a burger for everyone.").
-				Validate(func(t string) error {
-					if t == "Fishburger" {
-						return fmt.Errorf("no fish today, sorry")
-					}
-					return nil
-				}).
-				Value(&order.Burger.Type),
-
-			huh.NewMultiSelect[string]().
-				Title("Toppings").
-				Description("Choose up to 4.").
-				Options(
-					huh.NewOption("Lettuce", "Lettuce").Selected(true),
-					huh.NewOption("Tomatoes", "Tomatoes").Selected(true),
-					huh.NewOption("Charm Sauce", "Charm Sauce"),
-					huh.NewOption("Jalapeños", "Jalapeños"),
-					huh.NewOption("Cheese", "Cheese"),
-					huh.NewOption("Vegan Cheese", "Vegan Cheese"),
-					huh.NewOption("Nutella", "Nutella"),
-				).
-				Validate(func(t []string) error {
-					if len(t) <= 0 {
-						return fmt.Errorf("at least one topping is required")
-					}
-					return nil
-				}).
-				Value(&order.Burger.Toppings).
-				Filterable(true).
-				Limit(4),
-		),
-
-		// Prompt for toppings and special instructions.
-		// The customer can ask for up to 4 toppings.
-		huh.NewGroup(
-			huh.NewSelect[Spice]().
-				Title("Spice level").
-				Options(
-					huh.NewOption("Mild", Mild).Selected(true),
-					huh.NewOption("Medium", Medium),
-					huh.NewOption("Hot", Hot),
-				).
-				Value(&order.Burger.Spice),
-
-			huh.NewSelect[string]().
-				Options(huh.NewOptions("Fries", "Disco Fries", "R&B Fries", "Carrots")...).
-				Value(&order.Side).
-				Title("Sides").
-				Description("You get one free side with this order."),
-		),
-
-		// Gather final details for the order.
-		huh.NewGroup(
-			huh.NewInput().
-				Value(&order.Name).
-				Title("What's your name?").
-				Placeholder("Margaret Thatcher").
-				Validate(func(s string) error {
-					if s == "Frank" {
-						return errors.New("no franks, sorry")
-					}
-					return nil
-				}).
-				Description("For when your order is ready."),
-
-			huh.NewText().
-				Value(&order.Instructions).
-				Placeholder("Just put it in the mailbox please").
-				Title("Special Instructions").
-				Description("Anything we should know?").
-				CharLimit(400).
-				Lines(5),
-
-			huh.NewConfirm().
-				Title("Would you like 15% off?").
-				Value(&order.Discount).
-				Affirmative("Yes!").
-				Negative("No."),
-		),
-	).WithAccessible(accessible)
-
-	err := form.Run()
-
-	if err != nil {
-		fmt.Println("Uh oh:", err)
-		os.Exit(1)
 	}
 
-	prepareBurger := func() {
-		time.Sleep(2 * time.Second)
-	}
+	id, _ := uuid.NewV4()
 
-	_ = spinner.New().Title("Preparing your burger...").Accessible(accessible).Action(prepareBurger).Run()
+	f.Elems[id.String()] = nt
+
+	return C.CString(id.String())
+
 }
 
 //export FreeStruct
