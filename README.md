@@ -155,14 +155,7 @@ On Linux and macOS, it typically involves ensuring you have GCC, Make, and other
 1. **Install Node.js**:
    Download the latest LTS version of Node.js from [nodejs.org](https://nodejs.org).
 
-2. **Install Visual Studio Build Tools**:
-   - Download and install the [Build Tools for Visual Studio](https://visualstudio.microsoft.com/visual-cpp-build-tools/).
-   - During installation, select:
-     - **Desktop development with C++**
-     - Ensure the **Windows 10 SDK** is selected.
-
-3. **Install Python**:
-   - Install Python 3.x and ensure it is added to the PATH during installation.
+2. **Select native support in the Node Setup it'll handle everything**
 
 4. **Install `node-gyp` globally**:
    Run the following command in PowerShell or Command Prompt:
