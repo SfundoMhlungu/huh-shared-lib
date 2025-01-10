@@ -97,14 +97,46 @@ func (i *NewInput) ForGroup() huh.Field {
 
 	if i.t == 1 {
 		h := huh.NewText().Value(i.value).Description(i.opts.Description).
-			Title(i.opts.Title).
+			Title(i.opts.Title).Validate(func(s string) error {
+			if i.validators != nil {
+				for _, vali := range i.validators {
+					f, e := Validators[vali]
+
+					if e {
+						err := f(s)
+						if err != nil {
+							return err
+						}
+					}
+
+				}
+			}
+
+			return nil
+		}).
 			Placeholder(i.opts.Placeholder).WithTheme(theme)
 
 		return h
 	}
 	// fmt.Println(i.opts, "opts")
 	h := huh.NewInput().Value(i.value).
-		Description(i.opts.Description).
+		Description(i.opts.Description).Validate(func(s string) error {
+		if i.validators != nil {
+			for _, vali := range i.validators {
+				f, e := Validators[vali]
+
+				if e {
+					err := f(s)
+					if err != nil {
+						return err
+					}
+				}
+
+			}
+		}
+
+		return nil
+	}).
 		Title(i.opts.Title)
 	return h
 }
