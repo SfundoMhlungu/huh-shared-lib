@@ -8,7 +8,7 @@ The `huh` module in `charsm` introduces a set of interactive components to creat
 
 ### **System Requirements**
 1. **Node.js**: Ensure you have a Node.js version that supports native modules (`node-gyp`).
-2. **Native Shared Library**: The module uses shared libraries (`.dll` for Windows, `.so` for Linux) to port Huh. Currently, macOS is **not supported**.
+2. **Native Shared Library**: The module uses shared libraries (`.dll` for Windows, `.so` for Linux) to port Huh. Currently, macOS is **not supported(see contributions to build one)**.
 3. **Build Instructions**:
    - To build the shared library:
      ```bash
