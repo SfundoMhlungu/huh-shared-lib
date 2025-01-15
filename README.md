@@ -7,7 +7,7 @@ The `huh` module in `charsm` is set of interactive components to create CLI-base
 ## **Getting Started**
 
 ### **System Requirements**
-1. **Node.js**: Ensure you have a Node.js version that supports native modules (`node-gyp`).
+1. **Node.js**: Ensure you have a Node.js version that supports native modules (`node-gyp`)-[ffi-napi](https://www.npmjs.com/package/ffi-napi) needs the build tools.
 2. **Native Shared Library**: The module uses shared libraries (`.dll` for Windows, `.so` for Linux) to port Huh. Currently, macOS is **not supported(see contributions to build one)**.
 3. **Build Instructions**:
    - To build the shared library:
@@ -156,7 +156,7 @@ huh.Spinner(2, "Preparing...");
 
 ---
 
-## Node.js with Native Build Tools(YOU NEED THIS TO RUN SHARED/NATIVE C/C++ LIBS)
+## Node.js with Native Build Tools 
 
 On Windows, this is often referred to as installing Node.js with the **`node-gyp` prerequisites**, which include:
 
@@ -166,61 +166,11 @@ On Windows, this is often referred to as installing Node.js with the **`node-gyp
 
 On Linux and macOS, it typically involves ensuring you have GCC, Make, and other development tools installed.
 
----
+The node.js installer should handle everything if you select the native modules option
 
-### **Installation Steps**
+### Manual installion 
 
-#### **Windows**
-1. **Install Node.js**:
-   Download the latest LTS version of Node.js from [nodejs.org](https://nodejs.org).
-
-2. **Select native support in the Node Setup it'll handle everything**
-
-4. **Install `node-gyp` globally**:
-   Run the following command in PowerShell or Command Prompt:
-   ```bash
-   npm install -g node-gyp
-   ```
-
----
-
-#### **Linux**
-1. **Install Build Essentials**:
-   ```bash
-   sudo apt update
-   sudo apt install build-essential gcc g++ make python3
-   ```
-
-2. **Install `node-gyp` globally**:
-   ```bash
-   npm install -g node-gyp
-   ```
-
----
-
-#### **macOS**
-1. **Install Xcode Command Line Tools**:
-   ```bash
-   xcode-select --install
-   ```
-
-2. **Install Python** (if not already installed):
-   - Use Homebrew: `brew install python`.
-
-3. **Install `node-gyp` globally**:
-   ```bash
-   npm install -g node-gyp
-   ```
-
----
-
-### **Validation**
-After setup, validate the environment by creating a simple native module or running:
-```bash
-node-gyp configure build
-```
-
-This ensures that your Node.js environment is ready for compiling native modules.
+[manual-node-gyp](https://github.com/nodejs/node-gyp#installation)
 
 
 ## **Example Workflow**
