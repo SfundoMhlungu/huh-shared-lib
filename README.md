@@ -1,6 +1,6 @@
 # `charsm` Documentation: Introducing `huh` Forms
 
-The `huh` module in `charsm` introduces a set of interactive components to create CLI-based forms using native shared libraries (`.dll` and `.so` files). While the module is in its MVP stage, it allows for dynamic forms, inputs, confirmations, and spinners. Here's how to get started.
+The `huh` module in `charsm` is set of interactive components to create CLI-based forms using native shared libraries (`.dll` and `.so` files). its in an MVP stage.
 
 ---
 
@@ -16,7 +16,26 @@ The `huh` module in `charsm` introduces a set of interactive components to creat
      ```
      Replace `.dll` with `.so` for Linux systems.
 
+Node has an option to setup native modules on install
+
+![node](https://i.imgur.com/d7QDP8M.png)
+
 ---
+
+## Good first pr 
+
+in the fields.go file, combine `func (i *NewInput) Run() string ` and `func (i *NewInput) ForGroup() huh.Field` they do the same thing, Run should call forgroup and just run, group was an afterthought I got lazy!
+
+make sure to sastify the interface 
+
+```go
+// remove absolete, value earguly returned on run
+type Fieldsinterface interface {
+	GetValue() string
+	Run() string
+	ForGroup() huh.Field
+}
+```
 
 ## **Features**
 
